@@ -1,0 +1,25 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.BookModel>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+        <tr id="row_@item.Id">
+            <td class="hidden">@item.Id</td>
+            <td>@item.Title</td>
+            <td>@item.Descriptions</td>
+            <td>@item.Pages</td>
+            <td>@item.authorName</td>
+            <td>
+                <a class="btn btn-primary" onclick="addEdit(@item.Id)" href="#">
+                    <i class="fas fa-edit"></i>
+                </a> ||
+                <a class="btn btn-danger" onclick="deleteBook(@item.Id)" href="#">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+    }
+}
+

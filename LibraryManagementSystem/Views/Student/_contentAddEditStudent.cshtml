@@ -1,0 +1,135 @@
+﻿@model LibraryManagementSystem.Models.StudentModel
+
+<style>
+    .start {
+        color: red;
+    }
+</style>
+
+<div class="container">
+    <form id="myForm" name="test" style="max-width:550px;">
+
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-md-6">
+                <label>Name <span class="start">*</span> :</label>
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control name" })
+                <span id="erName" style="display:none;color:red;">Please enter name!</span>
+            </div>
+            <div class="col-md-6">
+                <label>Email <span class="start">*</span> :</label>
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control email" })
+                <span id="erEmail" style="display:none;color:red;">Email is not match!</span>
+                <span id="erEmailNew" style="display:none;color:red;">Email already used!</span>
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%;">
+            <div class="col-md-6">
+                <label>Phone <span class="start">*</span> :</label>
+                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control phone" })
+                <span id="erPhone" style="display:none;color:red;">Please enter number!</span>
+                <span id="erPhoneNew" style="display:none;color:red;">Phone already used!</span>
+            </div>
+            <div class="col-md-6">
+                <label>Address <span class="start">*</span> :</label>
+                @Html.TextBoxFor(model => model.Addr, new { @class = "form-control addr" })
+                <span id="erAddr" style="display:none;color:red;">Please enter address!</span>
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%;">
+            <div class="col-md-6">
+                <label>Note :</label>
+                @Html.TextBoxFor(model => model.Note, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6">
+                <a style="width:260px;margin-top:9%;" href="#" id="btnSubmit" class="btn btn-primary">
+                    @if (Model.Id > 0)
+                    {<span>Update</span>}
+                    else
+                    {<span>Add</span>}
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    var regexEmail = /\w+([-+.']\w+)*\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+    
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+            var check = true;
+            var name = $(".name").val();
+            var email = $(".email").val();
+            var phone = $(".phone").val();
+            var addr = $(".addr").val();
+            if (name == "") {
+                $("#erName").show();
+                check = false;
+            }
+            else {
+                $("#erName").hide();
+            }
+            
+            if (addr == "") {
+                $("#erAddr").show();
+                check = false;
+
+            }
+            else {
+                $("#erAddr").hide();
+
+            }
+            if (!regexEmail.test(email)) {
+                $("#erEmail").show();
+                check = false;
+            }
+            else {
+                $("#erEmail").hide();
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/checkEmail",
+                    data: { text: email },
+                    success: function (res) {
+                        if (res == true) {
+                            $("#erEmailNew").show();
+                            check = false;
+
+                        }
+                        
+                    }
+                })
+            }
+            if (isNaN(phone) || phone=="") {
+                $("#erPhone").show();
+                check = false;
+            }
+            else {
+                $("#erPhone").hide();
+                $("#erEmailNew").hide();
+            }
+            if (check == true) {
+                var data = $("#myForm").serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/Index",
+                    data: data,
+                    success: function () {
+                        
+                            Swal.fire(
+                                'Success!',
+                                'You added/updated this student!',
+                                'success'
+                            )
+                            setTimeout(function () { window.location.href = "/Student/Index"; }, 1000);
+                        
+                        
+                    }
+                })
+            }
+        })
+    })
+    
+</script>

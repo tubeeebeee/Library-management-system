@@ -1,0 +1,135 @@
+﻿@using LibraryManagementSystem.Models;
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<ShelfModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container" style="margin-top:2%;">
+    
+    @{
+        int pageno = (int)ViewBag.numPage;
+        int itemperpage = (int)ViewBag.sizePage;
+        int rowNo = ((pageno - 1) * itemperpage) + 1;
+    }
+    <a href="#" onclick="addEdit(0)" class="btn btn-primary"><i class="fas fa-plus"></i> ADD</a>
+    <hr />
+    <table class="table table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Name</th>
+                <th>Note</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="getRow">
+            @if (ViewBag.ShelfList != null)
+            {
+
+                foreach (var item in ViewBag.ShelfList)
+                {
+
+                    <tr class="search" id="row_@item.Id">
+
+                        <td>@(rowNo++)</td>
+                        <td>@item.Name</td>
+                        <td>@item.Note</td>
+                        <td>
+                            <a class="btn btn-primary" onclick="addEdit(@item.Id)" href="#">
+                                <i class="fas fa-edit"></i>
+                            </a> ||
+                            <a class="btn btn-danger" onclick="deleteShelf(@item.Id)" href="#">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+    <div></div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+    </div>
+    <input type="hidden" id="idDelete">
+    <!--start model-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h2 class="modal-title text-center">Shelf information</h2>
+                </div>
+                <div id="content" class="modal-body col-md-12">
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end model-->
+    <!--start delete model-->
+    <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h2 class="modal-title text-center" id="exampleModalLabel">Delete</h2>
+                </div>
+                <div id="content" class="modal-body text-center">
+                    Are you sure delete this shelf?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="ConfirmDelete()" type="button" class="btn btn-danger">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end delete model-->
+        
+</div>
+<script>
+    var addEdit = function (id) {
+        var url = "/Shelf/addEdit?id=" + id;
+        $("#content").load(url, function () {
+            $("#myModal").modal("show");
+        })
+    }
+    var deleteShelf = function (id) {
+        $("#idDelete").val(id);
+        $("#ModalDelete").modal("show");
+    }
+    var ConfirmDelete = function () {
+        var id = $("#idDelete").val();
+        $.ajax({
+            type: "POST",
+            url: "/Shelf/DeleteShelf",
+            data: { id: id },
+            success: function () {
+                $("#ModalDelete").modal("hide");
+                Swal.fire(
+                    'Success!',
+                    'You deleted this shelf!',
+                    'success'
+                )
+
+                $("#row_" + id).remove();
+
+                setTimeout(function () { window.location.href = "/Shelf/Index"; }, 1000);
+            }
+        })
+    }
+</script>

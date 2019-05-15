@@ -1,0 +1,78 @@
+﻿@model LibraryManagementSystem.Models.LocationModel
+<style>
+    .start {
+        color: red;
+    }
+</style>
+<div class="container" style="max-width:550px;">
+    <form id="myForm" name="test" style="max-width:550px;">
+
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-md-6">
+                <label>Name <span class="start">*</span> :</label>
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control name" })
+                <span id="erName" style="display:none;color:red;">Please enter name!</span>
+                <span id="erNameNew" style="display:none;color:red;">Please enter other name!</span>
+            </div>
+            <div class="col-md-6">
+                <label>Note :</label>
+                @Html.TextBoxFor(model => model.Note, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <hr />
+        <div class="row" style="margin-top:2%;">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <a style="" href="#" id="btnSubmit" class="btn center-block btn-primary">
+                    @if (Model.Id > 0)
+                    {<span>Update</span>}
+                    else
+                    {<span>Add</span>}
+                </a>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+            var check = true;
+            var name = $(".name").val();
+
+            if (name == "") {
+                $("#erName").show();
+                $("#erNameNew").hide();
+                check = false;
+            }
+            if (check == true) {
+                var data = $("#myForm").serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Location/Index",
+                    data: data,
+                    success: function (res) {
+                        if (res == true) {
+                            Swal.fire(
+                                'Success!',
+                                'You added/updated this location!',
+                                'success'
+                            )
+                            setTimeout(function () { window.location.href = "/Location/Index"; }, 1000);
+                        }
+                        else {
+                            $("#erNameNew").show();
+                            $("#erName").hide();
+                        }
+                    }
+                })
+            }
+        })
+    })
+</script>
+

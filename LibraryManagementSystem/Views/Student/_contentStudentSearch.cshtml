@@ -1,0 +1,25 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.StudentModel>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+        <tr id="row_@item.Id">
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Phone</td>
+            <td>@item.Addr</td>
+            <td></td>
+            <td>
+                <a class="btn btn-primary" onclick="addEdit(@item.Id)" href="#">
+                    <i class="fas fa-edit"></i>
+                </a> ||
+                <a class="btn btn-danger" onclick="deleteStudent(@item.Id)" href="#">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+    }
+}
+

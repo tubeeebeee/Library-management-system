@@ -1,0 +1,135 @@
+﻿@using LibraryManagementSystem.Models;
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<BorrowModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container" style="margin-top:2%">
+    @{
+        int pageno = (int)ViewBag.numPage;
+        int itemperpage = (int)ViewBag.sizePage;
+        int rowNo = ((pageno - 1) * itemperpage) + 1;
+    }
+    <a href="#" onclick="addEdit(0)" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Borrow</a>
+    <hr />
+    <!--table-->
+    @if (ViewBag.BorrowList != null)
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>User name</th>
+                    <th>Book name</th>
+                    <th>Since</th>
+                    <th>Until</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in ViewBag.BorrowList)
+                {
+                    <tr id="row_@item.Id_bor">
+                        <td>@(rowNo++)</td>
+                        <td>@item.userName</td>
+                        <td>@item.bookName</td>
+                        <td>@item.Since.ToShortDateString()</td>
+                        <td>@item.Until.ToShortDateString()</td>
+                        <td>
+
+                            <a class="btn btn-warning" onclick="returnABook(@item.Id_bor)" href="#">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Not available</p>
+    }
+    <div></div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+    </div>
+    <!--end table-->
+    <input type="hidden" id="idDelete">
+    <!--start modal-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title text-center" id="exampleModalLabel">Borrow Book</h3>
+                </div>
+                <div class="modal-body" id="content">
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal-->
+    <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h2 class="modal-title text-center" id="exampleModalLabel">Return Book</h2>
+                </div>
+                <div id="content" class="modal-body text-center">
+                    Return a book?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="ConfirmDelete()" type="button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var addEdit = function (id) {
+        var url = "/Borrow/addEdit?id=" + id;
+        $("#content").load(url, function () {
+            $("#myModal").modal("show");
+        })
+    }
+    var returnABook = function (id) {
+        $("#idDelete").val(id);
+        $("#ModalDelete").modal("show");
+    }
+    var ConfirmDelete = function () {
+        var id = $("#idDelete").val();
+        $.ajax({
+            type: "POST",
+            url: "/Borrow/returnBook",
+            data: { id: id },
+            success: function () {
+                $("#ModalDelete").modal("hide");
+                Swal.fire(
+                    'Success!',
+                    'You returned this book!',
+                    'success'
+                )
+
+                $("#row_" + id).remove();
+                setTimeout(function () { window.location.href = "/Borrow/Index"; }, 1000);
+            }
+        })
+    }
+</script>

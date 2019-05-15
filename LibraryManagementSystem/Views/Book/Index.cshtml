@@ -1,0 +1,157 @@
+﻿@using LibraryManagementSystem.Models;
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<BookModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container" style="margin-top:2%">
+    @{
+        int pageno = (int)ViewBag.numPage;
+        int itemperpage = (int)ViewBag.sizePage;
+        int rowNo = ((pageno - 1) * itemperpage) + 1;
+    }
+    <a href="#" onclick="addEdit(0)" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i> ADD</a>
+    <hr>
+    <input type="text" id="searchBook" class="form-control" placeholder="Search here" />
+    <!--start table-->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>TITLE</th>
+                <th>DESCRIPTION</th>
+                <th>PAGE</th>
+                <th>Author</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="getRow">
+            @if (ViewBag.bookList != null)
+            {
+
+                foreach (var item in ViewBag.bookList)
+                {
+
+                    <tr id="row_@item.Id">
+                        <td class="hidden">@item.Id</td>
+                        <td>@(rowNo++)</td>
+                        <td>@item.Title</td>
+                        <td>@item.Descriptions</td>
+                        <td>@item.Pages</td>
+                        <td>@item.authorName</td>
+                        <td>
+                            <a class="btn btn-primary" onclick="addEdit(@item.Id)" href="#">
+                                <i class="fas fa-edit"></i>
+                            </a> ||
+                            <a class="btn btn-danger" onclick="deleteBook(@item.Id)" href="#">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <!--end table-->
+    <div></div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+    </div>
+    <input id="idDelete" type="hidden">
+    <!--start add edit modal-->
+    <div class="modal fade col-md-12" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">BOOKS MANAGEMENT</h4>
+                </div>
+                <div id="content" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end add edit modal-->
+    <!--start delete modal-->
+    <div class="modal fade" id="myModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h2 class="modal-title text-center" id="exampleModalLabel">Delete</h2>
+                </div>
+                <div id="content" class="modal-body text-center">
+                    Are you sure delete this book?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="ConfirmDelete()" type="button" class="btn btn-danger">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end delete modal-->
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#searchBook").keyup(function () {
+            var searchText = $(this).val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Book/getSearch?text=" + searchText,
+                contentType: "html",
+                success: function (res) {
+                    if (searchText == "") {
+                        window.location.href = "/Book/Index";
+
+                    } else {
+                        $("#getRow").html(res);
+                    }
+                }
+            })
+        })
+    })
+    var addEdit = function (id) {
+        var url = "/Book/addEdit?id=" + id;
+        $("#content").load(url, function () {
+            $("#myModal").modal("show");
+        })
+    }
+    var deleteBook = function (id) {
+        $("#idDelete").val(id);
+        $("#myModalDelete").modal("show");
+    }
+    var ConfirmDelete = function () {
+
+        var id = $("#idDelete").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Book/DeleteBook",
+            data: { id: id },
+            success: function () {
+                $("#row_" + id).remove();
+                $("#myModalDelete").modal("hide");
+                Swal.fire(
+                    'Success!',
+                    'You deleted this book!',
+                    'success'
+                )
+                setTimeout(function () { window.location.href = "/Book/Index"; }, 1000);
+            }
+        })
+
+    }
+</script>

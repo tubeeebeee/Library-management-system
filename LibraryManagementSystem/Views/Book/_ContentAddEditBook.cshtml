@@ -1,0 +1,307 @@
+﻿@model LibraryManagementSystem.Models.BookModel
+<style>
+    .red-text {
+        color: red;
+    }
+</style>
+
+<div class="container">
+
+    @using (Html.BeginForm("Index", "Book", FormMethod.Post,
+                  new { role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                @Html.HiddenFor(model => model.Id, new { @class = "check" })
+                <label>Publisher <span class="red-text">*</span> :</label>
+                @Html.DropDownListFor(model => model.Id_pub, ViewBag.publisher as SelectList, "--select--", new { @class = "form-control publisher" })
+                <span id="erPub" style="color:red;display:none;">Please select one publisher!</span>
+
+            </div>
+            <div class="col-md-3">
+                <label>Location <span class="red-text">*</span> :</label>
+                @Html.DropDownListFor(model => model.Id_loc, ViewBag.location as SelectList, "--select--", new { @class = "form-control location" })
+                <span id="erLoc" style="color:red;display:none;">Please select one location!</span>
+            </div>
+            <div class="col-md-3">
+                <label>Shelf <span class="red-text">*</span> :</label>
+                @Html.DropDownListFor(model => model.Id_shelf, ViewBag.shelf as SelectList, "--select--", new { @class = "form-control shelf" })
+                <span id="erShelf" style="color:red;display:none;">Please select one shelf!</span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-3">
+                <label>Language <span class="red-text">*</span> :</label>
+                @Html.DropDownListFor(model => model.Id_lan, ViewBag.lan as SelectList, "--select--", new { @class = "form-control language" })
+                <span id="erLan" style="color:red;display:none;">Please select one Language!</span>
+            </div>
+            <div class="col-md-3">
+                <label>Categories <span class="red-text">*</span> :</label>
+                @Html.DropDownListFor(model => model.Id_cate, ViewBag.cate as SelectList, "--select--", new { @class = "form-control categories" })
+                <span id="erCate" style="color:red;display:none;">Please select one categories!</span>
+            </div>
+            <div class="col-md-3">
+                <label>Author <span class="red-text">*</span> :</label>
+                @Html.DropDownListFor(model => model.Id_author, ViewBag.author as SelectList, "--select--", new { @class = "form-control author" })
+                <span id="erAu" style="color:red;display:none;">Please select one author!</span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-3">
+                <label>Title <span class="red-text">*</span> :</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control title" })
+                <span id="erTitle" style="color:red;display:none;">Please enter title!</span>
+                <span id="erTitleNumber" style="color:red;display:none;">Please enter string!</span>
+                <span id="erTitleCheck" style="color:red;display:none;">Please enter other name!</span>
+            </div>
+            <div class="col-md-3">
+                <label>Pages :</label>
+                @Html.TextBoxFor(model => model.Pages, new { @class = "form-control", @type = "number" })
+            </div>
+            <div class="col-md-3">
+                <label>Keyword :</label>
+                @Html.TextBoxFor(model => model.keyword, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-3">
+                <label>Cost <span class="red-text">*</span> :</label>
+                @Html.TextBoxFor(model => model.Cost, new { @class = "form-control cost", @type = "number" })
+                <span id="erCost" style="color:red;display:none;">Please enter cost!</span>
+                <div style="margin-top:20px;">
+                    <label>Description :</label>
+                    @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>ISBN <span class="red-text">*</span> :</label>
+                @Html.TextBoxFor(model => model.Isbn, new { @class = "form-control isbn" })
+                <span id="erIsbn" style="color:red;display:none;">Please enter ISBN!</span>
+                <span id="erIsbnnew" style="color:red;display:none;">Please enter other ISBN!</span>
+                <div style="margin-top:20px;">
+                    <label>Note :</label>
+                    @Html.TextAreaFor(model => model.Note, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+
+                <label>Image <span class="red-text">*</span> :</label>
+                <div class="btn btn-primary" style="max-width:260px;">
+                    <input id="imageBrowes"
+                           type="file" name="ImageFile" />
+                    <span id="erImage" style="color:red;display:none;">Please select one Image!</span>
+                </div>
+
+                <div style="max-height:150px;max-width:150px"
+                     id="imgPreview" class="thumbnail">
+                    <img src="@Model.images" id="targetImage" class="img-responsive">
+                </div>
+                <p id="description"></p>
+
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-3">
+                @*<label>Cost :</label>
+                    @Html.TextBoxFor(model => model.Cost, new { @class = "form-control", @type = "number" })*@
+            </div>
+            <div class="col-md-3">
+                @*<label>ISBN :</label>
+                    @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control" })*@
+                <button style="max-width:300px;" type="submit" id="btnSubmit" class="btn btn-success form-control">
+                    @{if (Model.Id > 0)
+                        { <span>Update</span>}
+                        else
+                        { <span>Add</span>}
+                    }
+                </button>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+
+    }
+
+</div>
+
+<script>
+
+    $('form').submit(function (ev) {
+        var pub = $(".publisher").val();
+        var loc = $(".location").val();
+        var shelf = $(".shelf").val();
+        var cate = $(".categories").val();
+        var author = $(".author").val();
+        var lan = $(".language").val();
+        var title = $(".title").val();
+        var isbn = $(".isbn").val();
+        var cost = $(".cost").val();
+        var i = $("#imageBrowes").val();
+        var check = $(".check").val();
+        if (title == "" || isbn == "" || pub == "" || loc == "" || shelf == "" || cate == "" || author == "" || lan == "" || cost=="" || i == "") {
+            if (title == "" || !isNaN(title)) {
+                if (title == "") {
+                    $("#erTitle").show();
+                    ev.preventDefault();
+                }
+                else if (!isNaN(title)) {
+                    $("#erTitle").hide();
+                    $("#erTitleNumber").show();
+                    ev.preventDefault();
+                }
+
+            }
+            else{
+                if (check == "" || check <= 0) {
+                    $("#erTitle").hide();
+                    $("#erTitleNumber").hide();
+
+                        $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("checkTitle","Book")",
+                        data: { text: title },
+                        success: function (res) {
+                            if (res == true) {
+                                $("#erTitleCheck").show();
+                                $("#erTitle").hide();
+                                ev.preventDefault();
+                                
+                            }
+                            else {
+                                $("#erTitleCheck").hide();
+                               
+                            }
+                        }
+                    })
+
+                }
+
+            }
+            if (isbn == "") {
+                $("#erIsbn").show();
+                ev.preventDefault();
+            }
+            else {
+                if (check == "" || check <= 0) {
+                    $("#erIsbn").hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("checkIsbn", "Book")",
+                        data: { text: isbn },
+                        success: function (res) {
+                            if (res == true) {
+                                $("#erIsbnnew").show();
+                                $("#erIsbn").hide();
+                                ev.preventDefault();
+                            }
+                            else {
+                                $("#erIsbnnew").hide();
+                            }
+                        }
+                    })
+                }
+            }
+            if (pub == "") {
+                $("#erPub").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erPub").hide();
+            }
+            if (cost == "") {
+                $("#erCost").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erCost").hide();
+            }
+            if (cate == "") {
+                $("#erCate").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erCate").hide();
+            }
+            if (loc == "") {
+                $("#erLoc").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erLoc").hide();
+            }
+            if (shelf == "") {
+                $("#erShelf").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erShelf").hide();
+            }
+            if (lan == "") {
+                $("#erLan").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erLan").hide();
+            }
+            if (author == "") {
+                $("#erAu").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erAu").hide();
+            }
+            if (i == "") {
+                $("#erImage").show();
+                ev.preventDefault();
+            }
+            else {
+                $("#erImage").hide();
+
+            }
+        }
+        else {
+
+            Swal.fire(
+                'Success!',
+                'You added/updated this book!',
+                'success'
+            )
+
+
+            $("#er").hide();
+        }
+    })
+    $(document).ready(function () {
+
+        $("#imageBrowes").change(function () {
+            var File = this.files;
+            if (File && File[0]) {
+                ReadImage(File[0]);
+            }
+        })
+
+    })
+    var ReadImage = function (file) {
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "KB";
+                $("#targetImage").attr('src', _file.target.result);
+                $("#description").text("Size:" + size + ", " + height + "X " + width + "");
+                $("#imgPreview").show();
+            }
+        }
+    }
+
+</script>

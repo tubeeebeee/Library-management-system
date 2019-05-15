@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FinalProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AdminSystem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RoleSystem" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Author">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Addr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Book__Id_author__24927208" FromRole="Author" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Id_pub" Type="Int32" />
+    <Property Name="Id_loc" Type="Int32" />
+    <Property Name="Id_shelf" Type="Int32" />
+    <Property Name="Id_lan" Type="Int32" />
+    <Property Name="Id_cate" Type="Int32" />
+    <Property Name="Id_author" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Descriptions" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Pages" Type="Int32" />
+    <Property Name="keyword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Cost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="images" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Isbn" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Author" Relationship="Self.FK__Book__Id_author__24927208" FromRole="Book" ToRole="Author" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Book__Id_cate__239E4DCF" FromRole="Book" ToRole="Categories" />
+    <NavigationProperty Name="Language" Relationship="Self.FK__Book__Id_lan__22AA2996" FromRole="Book" ToRole="Languages" />
+    <NavigationProperty Name="Location" Relationship="Self.FK__Book__Id_loc__20C1E124" FromRole="Book" ToRole="Location" />
+    <NavigationProperty Name="Publisher" Relationship="Self.FK__Book__Id_pub__1FCDBCEB" FromRole="Book" ToRole="Publisher" />
+    <NavigationProperty Name="Shelf" Relationship="Self.FK__Book__Id_shelf__21B6055D" FromRole="Book" ToRole="Shelf" />
+    <NavigationProperty Name="Borrows" Relationship="Self.FK__Borrow__Id_Book__286302EC" FromRole="Book" ToRole="Borrow" />
+  </EntityType>
+  <EntityType Name="Borrow">
+    <Key>
+      <PropertyRef Name="Id_bor" />
+    </Key>
+    <Property Name="Id_bor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Id_User" Type="Int32" />
+    <Property Name="Id_Book" Type="Int32" />
+    <Property Name="Isbn" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="Since" Type="DateTime" Precision="0" />
+    <Property Name="Until" Type="DateTime" Precision="0" />
+    <Property Name="Note" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Book" Relationship="Self.FK__Borrow__Id_Book__286302EC" FromRole="Borrow" ToRole="Book" />
+    <NavigationProperty Name="UserSystem" Relationship="Self.FK__Borrow__Id_User__276EDEB3" FromRole="Borrow" ToRole="UserSystem" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Book__Id_cate__239E4DCF" FromRole="Categories" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Language">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Book__Id_lan__22AA2996" FromRole="Languages" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Book__Id_loc__20C1E124" FromRole="Location" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Publisher">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Addr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Book__Id_pub__1FCDBCEB" FromRole="Publisher" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Shelf">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Book__Id_shelf__21B6055D" FromRole="Shelf" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="UserSystem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Addr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Fee" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Note" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="isStatus" Type="Boolean" />
+    <NavigationProperty Name="Borrows" Relationship="Self.FK__Borrow__Id_User__276EDEB3" FromRole="UserSystem" ToRole="Borrow" />
+  </EntityType>
+  <Association Name="FK__Book__Id_author__24927208">
+    <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
+    <End Role="Book" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Author">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="Id_author" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Book__Id_cate__239E4DCF">
+    <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Book" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="Id_cate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Book__Id_lan__22AA2996">
+    <End Role="Languages" Type="Self.Language" Multiplicity="0..1" />
+    <End Role="Book" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Languages">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="Id_lan" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Book__Id_loc__20C1E124">
+    <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+    <End Role="Book" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="Id_loc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Book__Id_pub__1FCDBCEB">
+    <End Role="Publisher" Type="Self.Publisher" Multiplicity="0..1" />
+    <End Role="Book" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Publisher">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="Id_pub" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Book__Id_shelf__21B6055D">
+    <End Role="Shelf" Type="Self.Shelf" Multiplicity="0..1" />
+    <End Role="Book" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shelf">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="Id_shelf" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Borrow__Id_Book__286302EC">
+    <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+    <End Role="Borrow" Type="Self.Borrow" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Borrow">
+        <PropertyRef Name="Id_Book" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Borrow__Id_User__276EDEB3">
+    <End Role="UserSystem" Type="Self.UserSystem" Multiplicity="0..1" />
+    <End Role="Borrow" Type="Self.Borrow" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSystem">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Borrow">
+        <PropertyRef Name="Id_User" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FinalProjectEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AdminSystems" EntityType="Self.AdminSystem" />
+    <EntitySet Name="Authors" EntityType="Self.Author" />
+    <EntitySet Name="Books" EntityType="Self.Book" />
+    <EntitySet Name="Borrows" EntityType="Self.Borrow" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Languages" EntityType="Self.Language" />
+    <EntitySet Name="Locations" EntityType="Self.Location" />
+    <EntitySet Name="Publishers" EntityType="Self.Publisher" />
+    <EntitySet Name="Shelves" EntityType="Self.Shelf" />
+    <EntitySet Name="UserSystems" EntityType="Self.UserSystem" />
+    <AssociationSet Name="FK__Book__Id_author__24927208" Association="Self.FK__Book__Id_author__24927208">
+      <End Role="Author" EntitySet="Authors" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Book__Id_cate__239E4DCF" Association="Self.FK__Book__Id_cate__239E4DCF">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Book__Id_lan__22AA2996" Association="Self.FK__Book__Id_lan__22AA2996">
+      <End Role="Languages" EntitySet="Languages" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Book__Id_loc__20C1E124" Association="Self.FK__Book__Id_loc__20C1E124">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Book__Id_pub__1FCDBCEB" Association="Self.FK__Book__Id_pub__1FCDBCEB">
+      <End Role="Publisher" EntitySet="Publishers" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Book__Id_shelf__21B6055D" Association="Self.FK__Book__Id_shelf__21B6055D">
+      <End Role="Shelf" EntitySet="Shelves" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Borrow__Id_Book__286302EC" Association="Self.FK__Borrow__Id_Book__286302EC">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="Borrow" EntitySet="Borrows" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Borrow__Id_User__276EDEB3" Association="Self.FK__Borrow__Id_User__276EDEB3">
+      <End Role="UserSystem" EntitySet="UserSystems" />
+      <End Role="Borrow" EntitySet="Borrows" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

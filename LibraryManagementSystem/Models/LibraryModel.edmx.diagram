@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="27444edf7fdb4461a324c2f4f9aa8dd2" Name="Diagram1">
+        <EntityTypeShape EntityType="FinalProjectModel.AdminSystem" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Author" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Book" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Borrow" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Category" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Language" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Location" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Publisher" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.Shelf" Width="1.5" PointX="0.75" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="FinalProjectModel.UserSystem" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="FinalProjectModel.FK__Book__Id_author__24927208" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Book__Id_cate__239E4DCF" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Book__Id_lan__22AA2996" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Book__Id_loc__20C1E124" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Book__Id_pub__1FCDBCEB" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Book__Id_shelf__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Borrow__Id_Book__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="FinalProjectModel.FK__Borrow__Id_User__276EDEB3" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

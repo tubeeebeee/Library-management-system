@@ -1,0 +1,195 @@
+﻿@model LibraryManagementSystem.Models.BorrowModel
+
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(model => model.Id_bor, new { @class = "form-control" })
+        <div class="row">
+            <div class="col-md-6">
+                <label>ISBN BOOK :</label>
+                @Html.TextBoxFor(model => model.Isbn, new { @class = "form-control isbn" })
+                <span id="erIsbn" style="color:red;display:none;">sach khong ton tai!</span>
+                <span id="erIsbnNew" style="color:red;display:none;">vui long nhap ten sach!</span>
+            </div>
+            <div class="col-md-6">
+                <label>ID student :</label>
+                @Html.TextBoxFor(model => model.Id_User, new { @class = "form-control user" })
+                <span id="erUser" style="color:red;display:none;">user khong ton tai!</span>
+                <span id="erUserNumber" style="color:red;display:none;">vui long nhap so!</span>
+                <span id="erUserNew" style="color:red;display:none;">vui long nhap ma user!</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label>Book name :</label>
+                <input disabled id="bookName" type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>User name :</label>
+                <input disabled id="userName" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label>Author :</label>
+                <input disabled id="author" type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>Email :</label>
+                <input disabled id="email" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%">
+            <div class="col-md-6">
+                <label>Description :</label>
+                <input disabled id="desc" type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>Note :</label>
+                <input disabled id="note" type="text" class="form-control" />
+            </div>
+        </div>
+        <hr />
+        <div class="row" style="margin-top:2%;text-align:center;">
+            <a disabled class="btn bg-primary btn-lg" id="btnSubmit" href="#">Borrow</a>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+       
+        $(".user").keyup(function () {
+            var data = $(".user").val();
+            if (isNaN(data)) {
+                $("#erUser").hide();
+                $("#erUserNumber").show();
+                
+            } else {
+                $("#erUserNumber").hide();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("checkUser","Borrow")",
+                    data: { id: Number(data) },
+                    success: function (res) {
+                        if (res==0) {
+                            $("#userName").val("");
+                            $("#email").val("");
+                            $("#note").val("");
+                            $("#erUser").hide();
+                            $("#erIsbnNew").hide();
+                            $("#erUserNew").hide();
+                            $('#btnSubmit').attr('disabled', 'disabled');
+                        }
+                        else if (res.resUser == "") {
+                            $("#userName").val("");
+                            $("#email").val("");
+                            $("#note").val("");
+                            $("#erUser").show();
+                            $("#erIsbnNew").hide();
+                            $("#erUserNew").hide();
+                            $('#btnSubmit').attr('disabled', 'disabled');
+                        }
+                        else {
+                            $("#erUser").hide();
+                            $("#userName").val(res.resUser);
+                            $("#email").val(res.resEmail);
+                            $("#note").val(res.resNote);
+                            $("#erIsbnNew").hide();
+                            $("#erUserNew").hide();
+                            $('#btnSubmit').removeAttr('disabled');
+                        }
+                    }
+                })
+            }
+        })
+        //hhii
+        $(".isbn").keyup(function () {
+                var data = $(".isbn").val();
+            
+                
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("checkBook","Borrow")",
+                    data: { isbn: data },
+                    success: function (res) {
+                        if (res == 0) {
+                            $("#bookName").val("");
+                            $("#author").val("");
+                            $("#desc").val("");
+                            $("#erIsbn").hide();
+                            $("#erIsbnNew").hide();
+                            $("#erUserNew").hide();
+                            $('#btnSubmit').attr('disabled', 'disabled');
+                        }
+                        else if (res.resTitle == "") {
+                            $("#erIsbn").show();
+                            $("#bookName").val("");
+                            $("#author").val("");
+                            $("#desc").val("");
+                            $("#erIsbnNew").hide();
+                            $("#erUserNew").hide();
+                            $('#btnSubmit').attr('disabled', 'disabled');
+                        }
+                        else {
+                            $("#bookName").val(res.resTitle);
+                            $("#author").val(res.resAuthor);
+                            $("#desc").val(res.resDesc);
+                            $("#erIsbn").hide();
+                            $("#erIsbnNew").hide();
+                            $("#erUserNew").hide();
+                            $('#btnSubmit').removeAttr('disabled');
+                        }
+                    }
+                })
+            
+        })
+        
+        $("#btnSubmit").click(function () {
+            if ($(".isbn").val() == "" || $(".user").val() == "") {
+                if ($(".isbn").val() == "" && $(".user").val() == "") {
+                    $("#erIsbnNew").show();
+                    $("#erUserNew").show();
+                    return false;
+                }
+                else if ($(".isbn").val() == "") {
+                    $("#erIsbnNew").show();
+                    return false;
+                }
+                else {
+                    $("#erUserNew").show();
+                    return false;
+                }
+            } else {
+                $("#erIsbnNew").hide();
+                $("#erUserNew").hide();
+                var data = $("#myForm").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/Borrow/Index",
+                    data: data,
+                    success: function (res) {
+                        if (res == 0) {
+                            Swal.fire(
+                                'Success!',
+                                'You borrowed this book!',
+                                'success'
+                            )
+                            setTimeout(function () { window.location.href = "/Borrow/Index"; }, 1000);
+                        } else if (res == 1) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'vuot qua so lan muon!'
+                            })
+                        } else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Same book was borrowed!'
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    })
+</script>

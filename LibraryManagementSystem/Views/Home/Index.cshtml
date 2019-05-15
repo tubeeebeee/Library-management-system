@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    .spec{
+        color:darkorange;
+    }
+</style>
+@*@if (User.Identity.IsAuthenticated)
+{
+    <h1>welcome @(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name : "Guest")</h1>
+    <a href="@Url.Action("SignOut","Home")">sign out</a>
+}*@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>Lorem ipsum dolor sit amet</h1>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididuntLorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididuntLorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt
+            </p>
+            <a class="float-right text-warning spec">Read more...</a>
+        </div>
+        <div class="col-lg-6">
+        <img class="img-fluid img-thumbnail" src="https://images.pexels.com/photos/904616/pexels-photo-904616.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div class="col-lg-4">
+            <h3>Lorem ipsum dolor sit amet</h3>
+            <img src="https://images.pexels.com/photos/904616/pexels-photo-904616.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" class="img-fluid img-thumbnail float-left mr-4">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+            <a class="float-right text-warning spec">Read more...</a>
+        </div>
+        <div class="col-lg-4">
+            <h3>Lorem ipsum dolor sit amet</h3>
+            <img src="https://images.pexels.com/photos/904616/pexels-photo-904616.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" class="img-fluid img-thumbnail float-left mr-4">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+            <a class="float-right text-warning spec">Read more...</a>
+        </div>
+        <div class="col-lg-4">
+            <h3>Lorem ipsum dolor sit amet</h3>
+            <img src="https://images.pexels.com/photos/904616/pexels-photo-904616.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" class="img-fluid img-thumbnail float-left mr-4">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+            <a class="float-right text-warning spec">Read more...</a>
+        </div>
+    </div>
+</div>
